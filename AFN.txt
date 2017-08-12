@@ -1,0 +1,8 @@
+REGULAR EXPRESSION: ((1?)*)*
+REGULAR EXPRESSION IN POSTFIX: 1ε|**
+SYMBOL LIST: [1]
+TRANSITIONS LIST: [0 - 1 - 1, 2 - ε - 3, 4 - ε - 0, 4 - ε - 2, 1 - ε - 5, 3 - ε - 5, 5 - ε - 4, 6 - ε - 7, 6 - ε - 4, 5 - ε - 7, 7 - ε - 6, 8 - ε - 9, 8 - ε - 6, 7 - ε - 9]
+FINAL STATE: [9]
+STATES: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+INITIAL STATE: [8]
+GENERATION TIME: 5 ms
