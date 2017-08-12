@@ -41,7 +41,7 @@ public class Runnable {
                 "See README.md for instructions.\n");
         while (cont) {
             // supply the regexp through user input
-            System.out.println("ENTER A RE: ");
+            System.out.println("ENTER A RE (FOR EMPTY WORD USE ε): ");
             Scanner sc = new Scanner(System.in);
             regexp = sc.nextLine();
             System.out.println("ENTER A WORD: ");
@@ -53,7 +53,7 @@ public class Runnable {
             System.out.println("FILES GENERATED. SEE README.md FOR DIRECTORIES.\n" +
                     "DO YOU WISH TO ENTER A NEW RE?: \n" +
                     "1. YES\n" +
-                    "2. NO");
+                    "2. NO\n");
             String input = sc.nextLine();
             if (input.equals("2")) { cont = false; }
         }

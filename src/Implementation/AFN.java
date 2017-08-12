@@ -25,6 +25,7 @@ public class AFN {
     private List<String> states; // AFN's states
 
     public static int stateCount; // id for States
+    private int closureCont;
 
     /* To save state reference */
     private State saveFinal;
@@ -53,6 +54,7 @@ public class AFN {
         states = new LinkedList<String>();
         stackInitial = new Stack<>();
         stackFinal = new Stack<>();
+        closureCont = 0;
         computeSymbolList();
         regExpToAFN();
         computeStateList();
@@ -79,7 +81,7 @@ public class AFN {
                     if ((transitionsList.get(k).getInitialState() == currentState) &&
                             (transitionsList.get(k).getTransitionSymbol().equals(currentChar))) {
                         State nextState = transitionsList.get(k).getFinalState();
-                        tmpStateList = eClosure(nextState, new LinkedList<>());
+                        tmpStateList = eClosure(nextState, new LinkedList<>(), nextState);
                         tmpStateList.add(nextState);
                         if (tmpStateList.contains(finalStates.get(0))) {
                             dContainsFinalState = true;
@@ -88,10 +90,11 @@ public class AFN {
                     } else if ((transitionsList.get(k).getInitialState() == currentState) &&
                             (transitionsList.get(k).getTransitionSymbol().equals("ε"))) {
                         State nextState = transitionsList.get(k).getFinalState();
-                        tmpStateList = eClosure(nextState, currentStateList);
+                        tmpStateList = eClosure(nextState, currentStateList, nextState);
                         tmpStateList.add(nextState);
-                        //k = transitionsList.size();
+                        k = transitionsList.size();
                     }
+                    closureCont = 0;
                 }
             }
         }
@@ -125,16 +128,26 @@ public class AFN {
      * @param tmpClosure
      * @return
      */
-    private List<State> eClosure(State initialState, List<State> tmpClosure) {
+    private List<State> eClosure(State initialState, List<State> tmpClosure, State previousState) {
         // initialState is finalState of current Transition
+        int cont = 0;
         for (int i = 0; i < this.transitionsList.size(); i++) {
             if (transitionsList.get(i).getInitialState() == initialState) {
                 if (transitionsList.get(i).getTransitionSymbol().equals("ε")) {
                     if (!tmpClosure.contains(transitionsList.get(i).getFinalState())) {
                         tmpClosure.add(transitionsList.get(i).getFinalState());
+                        closureCont = 0;
                     }
                     if(!tmpClosure.contains(initialState)) {
-                        eClosure(transitionsList.get(i).getFinalState(), tmpClosure);
+                        if (transitionsList.get(i).getFinalState().getStateId() != previousState.getStateId()) {
+                            eClosure(transitionsList.get(i).getFinalState(), tmpClosure, initialState);
+                        }
+                    }
+                    if (tmpClosure.contains(initialState) && closureCont == 0) {
+                        if (transitionsList.get(i).getFinalState().getStateId() != previousState.getStateId()) {
+                            eClosure(transitionsList.get(i).getFinalState(), tmpClosure, initialState);
+                        }
+                        closureCont = 1;
                     }
                 }
             }
