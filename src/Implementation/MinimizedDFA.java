@@ -3,6 +3,9 @@ package Implementation;
 import java.util.*;
 
 /**
+ * MinimizedDFA
+ * Minimizes a DFA using Hopcroft's partition algorithm.
+ *
  * Created by Gabriel Brolo on 04/08/2017.
  */
 public class MinimizedDFA {
@@ -44,6 +47,9 @@ public class MinimizedDFA {
         //setFinalAndInitialStates();
     }
 
+    /**
+     * Partition algorithm
+     */
     private void minimize() {
 
         List<Integer> SMinusF = new LinkedList<>(); // S\F
@@ -108,6 +114,11 @@ public class MinimizedDFA {
 
     }
 
+    /**
+     * Creates a new partition from a given partition
+     * @param partition
+     * @return
+     */
     private List<List<Integer>> newPartition(List<List<Integer>> partition) {
         List<List<Integer>> partitionNew = new LinkedList<>();
         for (List<Integer> S : partition) {

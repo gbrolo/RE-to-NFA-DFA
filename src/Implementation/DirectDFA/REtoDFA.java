@@ -1,8 +1,14 @@
 package Implementation.DirectDFA;
 
+import Implementation.State;
+import Implementation.Transition;
+
 import java.util.*;
 
 /**
+ * REtoDFA
+ * Builds a DFA directly from a RE.
+ *
  * Created by Gabriel Brolo on 08/08/2017.
  */
 public class REtoDFA {
@@ -20,6 +26,7 @@ public class REtoDFA {
     private HashMap<Integer, List<Integer>> stateMap; // DFA states
     private HashMap<List<Integer>, Integer> stateMapBck; // DFA states backwards notation
     private HashMap<Integer, HashMap<String, Integer>> transitionTable;
+    private List<Transition> transitionsList;
 
     public REtoDFA(String postfixRegexp) {
         this.postfixRegexp = postfixRegexp;
@@ -33,6 +40,7 @@ public class REtoDFA {
         this.stateMap = new HashMap<>();
         this.stateMapBck = new HashMap<>();
         this.transitionTable = new HashMap<>();
+        this.transitionsList = new LinkedList<>();
         stateIDCount = 0;
         // extend the regexp
         extendRE();
@@ -44,6 +52,9 @@ public class REtoDFA {
         buildDFA();
     }
 
+    /**
+     * Extend the regexp by adding a # to the end
+     */
     private void extendRE() {
         this.postfixRegexp = this.postfixRegexp + "#.";
     }
@@ -124,8 +135,22 @@ public class REtoDFA {
 
         }
 
+        for (int i = 0; i < transitionTable.size(); i++) {
+            HashMap<String, Integer> info = transitionTable.get(i);
+
+            for (int j = 0; j < symbolList.size(); j++) {
+                String currSymbol = symbolList.get(j);
+                if (info.get(currSymbol) != null) {
+                    Transition tmp = new Transition(currSymbol, new State(i), new State(info.get(currSymbol)));
+                    transitionsList.add(tmp);
+                }
+            }
+        }
     }
 
+    /**
+     * Followpos of nodelist
+     */
     private void findFollowPos() {
         // initialize followpos table with empty values and as many keys as posCount
         for (int i = 0; i < posCount; i++) {
@@ -219,6 +244,9 @@ public class REtoDFA {
 
     }
 
+    /**
+     * fill the tree
+     */
     private void fillList() {
         // traverse the RE
         int pos = 1;
@@ -339,5 +367,6 @@ public class REtoDFA {
     public HashMap<Integer, String> getStateSymbol() { return this.stateSymbol; }
     public HashMap<Integer, List<Integer>> getStateMap() { return this.stateMap; }
     public HashMap<Integer, HashMap<String, Integer>> getTransitionTable() { return this.transitionTable; }
+    public List<Transition> getTransitionsList() { return this.transitionsList; }
 
 }

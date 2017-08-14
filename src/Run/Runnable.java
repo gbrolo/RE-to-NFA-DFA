@@ -99,7 +99,11 @@ public class Runnable {
             dfaWriter.println("GENERATION TIME: "+dfaDuration + " ns");
             dfaWriter.close();
 
+            dfaStartTime = System.nanoTime();
             MinimizedDFA minimizedDFA = new MinimizedDFA(dfa);
+            dfaEndTime = System.nanoTime();
+            dfaDuration = (dfaEndTime - dfaStartTime);
+
             PrintWriter mDfaWriter = new PrintWriter("MIN_DFA.txt", "UTF-8");
             mDfaWriter.println("REGULAR EXPRESSION: "+regexp);
             mDfaWriter.println("REGULAR EXPRESSION IN POSTFIX: "+afn.getPostFixRegExp());
@@ -109,18 +113,25 @@ public class Runnable {
                     "WHERE STATE CORRESPONDS TO A STATE IN 'STATES': \n" + minimizedDFA.getMinimizedDFATable());
             mDfaWriter.println("INITIAL STATE: " + minimizedDFA.getInitialStates());
             mDfaWriter.println("FINAL STATES: " + minimizedDFA.getFinalStates());
+            mDfaWriter.println("MINIMIZATION TOOK: " + dfaDuration + " ns.");
             mDfaWriter.close();
 
+            dfaStartTime = System.nanoTime();
             REtoDFA direct = new REtoDFA(afn.getPostFixRegExp());
+            dfaEndTime = System.nanoTime();
+            dfaDuration = (dfaEndTime - dfaStartTime);
+
             PrintWriter directDFAWriter = new PrintWriter("DIRECT_DFA.txt", "UTF-8");
             directDFAWriter.println("REGULAR EXPRESSION: "+regexp);
             directDFAWriter.println("REGULAR EXPRESSION IN POSTFIX: "+afn.getPostFixRegExp());
             directDFAWriter.println("SYMBOL LIST: " + direct.getSymbolList());
             directDFAWriter.println("POSITIONS (POSITION_ID = SYMBOL): " + direct.getStateSymbol());
             directDFAWriter.println("STATE MAP(STATE = FOLLOWPOS): " + direct.getStateMap());
+            directDFAWriter.println("TRANSITIONS LIST: " + direct.getTransitionsList());
             directDFAWriter.println("TRANSITION TABLE: " + direct.getTransitionTable());
             directDFAWriter.println("INITIAL STATE: " + direct.getInitialState());
             directDFAWriter.println("FINAL STATES: " + direct.getFinalStates());
+            directDFAWriter.println("DIRECT GENERATION TOOK: " + dfaDuration + " ns.");
             directDFAWriter.close();
 
         } catch (IOException e) {
