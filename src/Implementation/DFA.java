@@ -42,6 +42,7 @@ public class DFA {
      * @return
      */
     public String extendedDelta(String input) {
+        System.out.println("Starting DFA Simulation...");
         long start = System.nanoTime();
         int currentState = initialStates.get(0);
         for (int i = 0; i < input.length(); i++) {
@@ -50,13 +51,22 @@ public class DFA {
                 if (transitionsList.get(j).getInitialState().getStateId() == currentState) {
                     if (transitionsList.get(j).getTransitionSymbol().equals(currChar)) {
                         currentState = transitionsList.get(j).getFinalState().getStateId();
+                        System.out.print("|" + transitionsList.get(j) + "|");
                         j = transitionsList.size();
                     } else if ((transitionsList.get(j).getInitialState().getNextStates().size() == 0)) {
                         currentState = -1;
+                    } else if ((!transitionsList.get(j).getTransitionSymbol().equals(currChar))
+                            && (finalStates.contains(transitionsList.get(j).getInitialState().getStateId()))) {
+                        currentState = -1;
+                    }
+                    if ((currChar.equals("ε")) && (finalStates.contains(transitionsList.get(j).getInitialState().getStateId()))) {
+                        currentState = transitionsList.get(j).getInitialState().getStateId();
+                        j = transitionsList.size();
                     }
                 }
             }
         }
+        System.out.println("\nDFA simulation terminated.");
         long finish = System.nanoTime();
         long duration = (finish - start);
 

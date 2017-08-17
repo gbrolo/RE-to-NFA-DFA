@@ -33,6 +33,7 @@ public class Runnable {
     public static AFN afn;
     public static DFA dfa;
     public static String word;
+    public static final String divisor = "________________________________________\n";
     public static void main(String []args) {
         //regexp = "(a|ε)b(a+)c?"; // This is the regexp you need to supply
 
@@ -47,9 +48,8 @@ public class Runnable {
             System.out.println("ENTER A WORD: ");
             word = sc.nextLine();
             writeFiles();
-            System.out.println("________________________________________\n" +
-                    "DFA SEARCH: \n" + dfa.extendedDelta(word));
-            System.out.println("NFA SEARCH: \n" + afn.extendedDelta(word) + "\n________________________________________\n");
+            System.out.println(divisor + "DFA SEARCH: \n" + dfa.extendedDelta(word) + "\n" + divisor);
+            System.out.println(divisor + "NFA SEARCH: \n" + afn.extendedDelta(word) + "\n" + divisor + "\n");
             System.out.println("FILES GENERATED. SEE README.md FOR DIRECTORIES.\n" +
                     "DO YOU WISH TO ENTER A NEW RE?: \n" +
                     "1. YES\n" +

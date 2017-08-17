@@ -67,6 +67,7 @@ public class AFN {
      * @return
      */
     public String extendedDelta(String input) {
+        System.out.println("Starting NFA Simulation...");
         long start = System.nanoTime();
         List<State> currentStateList = initialState;
         List<State> tmpStateList = new LinkedList<>();
@@ -86,6 +87,7 @@ public class AFN {
                         if (tmpStateList.contains(finalStates.get(0))) {
                             dContainsFinalState = true;
                         }
+                        System.out.println("State List: " + tmpStateList.toString());
                         k = transitionsList.size();
                     } else if ((transitionsList.get(k).getInitialState() == currentState) &&
                             (transitionsList.get(k).getTransitionSymbol().equals("ε"))) {
@@ -99,7 +101,7 @@ public class AFN {
             }
         }
 
-        //System.out.println(currentStateList);
+        System.out.println("NFA Simulation terminated.");
 
         long finish = System.nanoTime();
         long duration = (finish - start);
